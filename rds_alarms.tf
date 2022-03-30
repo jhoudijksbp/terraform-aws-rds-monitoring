@@ -9,7 +9,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   statistic           = "Average"
   threshold           = 90
   alarm_description   = "Average database CPU utilization is too high."
-  tags                = module.jeffrey_tags.tags
+  tags                = var.tags
   #alarm_actions       = var.actions_alarm
   #ok_actions          = var.actions_ok
 

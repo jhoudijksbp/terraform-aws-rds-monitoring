@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
 // Blocked transactions
 resource "aws_cloudwatch_metric_alarm" "blocked_transactions" {
   for_each            = toset(var.rds_instance_ids)
-  alarm_name          = "rds-${each.key}-"
+  alarm_name          = "rds-${each.key}-BlockedTransactions"
   alarm_actions       = [aws_sns_topic.rds_monitoring.arn]
   alarm_description   = "One or more blocked transactions detected!"
   comparison_operator = "GreaterThanThreshold"

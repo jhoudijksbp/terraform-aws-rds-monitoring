@@ -48,7 +48,7 @@ resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   alarm_description   = "Average database replicaLagis too high, readers are too far behind master"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
-  metric_name         = "DiskQueueDepth"
+  metric_name         = "AuroraReplicaLag"
   namespace           = "AWS/RDS"
   ok_actions          = [aws_sns_topic.rds_monitoring.arn]
   period              = var.statistic_period

@@ -19,20 +19,20 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   }
 }
 
-// Disk Utilization
-resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
+// Blocked transactions
+resource "aws_cloudwatch_metric_alarm" "blocked_transactions" {
   for_each            = toset(var.rds_instance_ids)
-  alarm_name          = "rds-${each.key}-highDiskQueueDepth"
+  alarm_name          = "rds-${each.key}-"
   alarm_actions       = [aws_sns_topic.rds_monitoring.arn]
-  alarm_description   = "Average database disk queue depth is too high, performance may be negatively impacted."
+  alarm_description   = "One or more blocked transactions detected!"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
-  metric_name         = "DiskQueueDepth"
+  metric_name         = "BlockedTransactions"
   namespace           = "AWS/RDS"
   ok_actions          = [aws_sns_topic.rds_monitoring.arn]
   period              = var.statistic_period
-  statistic           = "Average"
-  threshold           = var.disk_queue_depth_too_high_threshold
+  statistic           = "Maximum"
+  threshold           = 0
   tags                = var.tags
 
   dimensions = {

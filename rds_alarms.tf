@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
   evaluation_periods  = var.evaluation_period
   metric_name         = "DiskQueueDepth"
   namespace           = "AWS/RDS"
-  ok_actions          = var.actions_ok
+  ok_actions          = [aws_sns_topic.rds_monitoring]
   period              = var.statistic_period
   statistic           = "Average"
   threshold           = var.disk_queue_depth_too_high_threshold
@@ -50,7 +50,7 @@ resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   evaluation_periods  = var.evaluation_period
   metric_name         = "DiskQueueDepth"
   namespace           = "AWS/RDS"
-  ok_actions          = var.actions_ok
+  ok_actions          = [aws_sns_topic.rds_monitoring]
   period              = var.statistic_period
   statistic           = "Average"
   threshold           = var.replicalag_threshold

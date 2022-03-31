@@ -59,4 +59,4 @@ resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   dimensions = {
     DBInstanceIdentifier = each.key
   }
-  
+}

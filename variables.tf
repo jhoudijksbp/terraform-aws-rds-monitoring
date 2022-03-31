@@ -4,10 +4,22 @@ variable "cpu_utilization_too_high_threshold" {
   description = "Alarm threshold for the 'highCPUUtilization' alarm"
 }
 
-variable "disk_queue_depth_too_high_threshold" {
-  type        = string
-  default     = "64"
-  description = "Alarm threshold for the 'highDiskQueueDepth' alarm"
+variable "disable_actions_blocks" {
+  type        = list(string)
+  default     = []
+  description = "List of RDS instance Id's for which to disable alarm actions for blocked transactions"
+}
+
+variable "disable_actions_cpu" {
+  type        = list(string)
+  default     = []
+  description = "List of RDS instance Id's for which to disable alarm actions for CPUUtilization"
+}
+
+variable "disable_actions_lag" {
+  type        = list(string)
+  default     = []
+  description = "List of RDS instance Id's for which to disable alarm actions for Replication Lag"
 }
 
 variable "email_endpoint" {

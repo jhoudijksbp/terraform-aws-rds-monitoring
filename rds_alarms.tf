@@ -2,7 +2,7 @@
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   for_each            = toset(var.rds_instance_ids)
   alarm_name          = "rds-${each.key}-highCPUUtilization"
-  alarm_actions       = [aws.aws_sns_topic.rds_monitoring]
+  alarm_actions       = [aws_sns_topic.rds_monitoring]
   alarm_description   = "Average database CPU utilization is too high."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
 resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
   for_each            = toset(var.rds_instance_ids)
   alarm_name          = "rds-${each.key}-highDiskQueueDepth"
-  alarm_actions       = var.actions_alarm
+  alarm_actions       = [aws_sns_topic.rds_monitoring]
   alarm_description   = "Average database disk queue depth is too high, performance may be negatively impacted."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period
@@ -44,7 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
 resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   for_each            = toset(var.rds_instance_ids)
   alarm_name          = "rds-${each.key}-replicaLag"
-  alarm_actions       = var.actions_alarm
+  alarm_actions       = [aws_sns_topic.rds_monitoring]
   alarm_description   = "Average database replicaLagis too high, readers are too far behind master"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = var.evaluation_period

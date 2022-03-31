@@ -12,6 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   period              = var.statistic_period
   statistic           = "Average"
   threshold           = var.cpu_utilization_too_high_threshold
+  treat_missing_data  = "breaching"
   tags                = var.tags
 
   dimensions = {
@@ -33,6 +34,7 @@ resource "aws_cloudwatch_metric_alarm" "blocked_transactions" {
   period              = var.statistic_period
   statistic           = "Maximum"
   threshold           = 0
+  treat_missing_data  = "breaching"
   tags                = var.tags
 
   dimensions = {
@@ -54,6 +56,7 @@ resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   period              = var.statistic_period
   statistic           = "Average"
   threshold           = var.replicalag_threshold
+  treat_missing_data  = "ignore"
   tags                = var.tags
 
   dimensions = {

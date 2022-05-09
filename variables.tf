@@ -40,6 +40,11 @@ variable "kms_key_id" {
   description = "The KMS key ID used for SNS topic"
 }
 
+variable "monitoring_instances_list" {
+  type        = list(string)
+  description = "List of instances which is needed for the for_each"
+}
+
 variable "replicalag_threshold" {
   type        = string
   default     = "300000" # 5 minutes

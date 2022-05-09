@@ -1,8 +1,8 @@
 // Blocked transactions
 resource "aws_cloudwatch_metric_alarm" "blocked_transactions" {
-  for_each            = toset(var.rds_instance_ids)
-  actions_enabled     = contains(var.disable_actions_cpu, each.value) ? false : true
-  alarm_name          = "rds-${each.key}-BlockedTransactions"
+  for_each            = { for instance in var.monitoring_instances_list : instance.stack => instance }
+  actions_enabled     = contains(var.disable_actions_blocks, element(var.rds_instance_ids, each.value.counter)) ? false : true
+  alarm_name          = "rds-${each.value.stack}-${each.value.counter}-BlockedTransactions"
   alarm_actions       = [aws_sns_topic.rds_monitoring.arn]
   alarm_description   = "One or more blocked transactions detected!"
   comparison_operator = "GreaterThanThreshold"
@@ -17,15 +17,15 @@ resource "aws_cloudwatch_metric_alarm" "blocked_transactions" {
   tags                = var.tags
 
   dimensions = {
-    DBInstanceIdentifier = each.key
+    DBInstanceIdentifier = element(var.rds_instance_ids, each.value.counter)
   }
 }
 
 //CPUUtilization
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
-  for_each            = toset(var.rds_instance_ids)
-  actions_enabled     = contains(var.disable_actions_cpu, each.value) ? false : true
-  alarm_name          = "rds-${each.key}-highCPUUtilization"
+  for_each            = { for instance in var.monitoring_instances_list : instance.stack => instance }
+  actions_enabled     = contains(var.disable_actions_cpu, element(var.rds_instance_ids, each.value.counter)) ? false : true
+  alarm_name          = "rds-${each.value.stack}-${each.value.counter}-highCPUUtilization"
   alarm_actions       = [aws_sns_topic.rds_monitoring.arn]
   alarm_description   = "Average database CPU utilization is too high."
   comparison_operator = "GreaterThanThreshold"
@@ -40,15 +40,15 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   tags                = var.tags
 
   dimensions = {
-    DBInstanceIdentifier = each.key
+    DBInstanceIdentifier = element(var.rds_instance_ids, each.value.counter)
   }
 }
 
 // Lag replication
 resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   for_each            = toset(var.rds_instance_ids)
-  actions_enabled     = contains(var.disable_actions_cpu, each.value) ? false : true
-  alarm_name          = "rds-${each.key}-replicaLag"
+  actions_enabled     = contains(var.disable_actions_lag, element(var.rds_instance_ids, each.value.counter)) ? false : true
+  alarm_name          = "rds-${each.value.stack}-${each.value.counter}-replicaLag"
   alarm_actions       = [aws_sns_topic.rds_monitoring.arn]
   alarm_description   = "Average database replicaLagis too high, readers are too far behind master"
   comparison_operator = "GreaterThanThreshold"
@@ -63,6 +63,6 @@ resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
   tags                = var.tags
 
   dimensions = {
-    DBInstanceIdentifier = each.key
+    DBInstanceIdentifier = element(var.rds_instance_ids, each.value.counter)
   }
 }

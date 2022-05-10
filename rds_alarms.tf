@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
 
 // Lag replication
 resource "aws_cloudwatch_metric_alarm" "replicalag_too_high" {
-  for_each            = toset(var.rds_instance_ids)
+  for_each            = { for instance in var.monitoring_instances_list : instance.stack => instance }
   actions_enabled     = contains(var.disable_actions_lag, element(var.rds_instance_ids, each.value.counter)) ? false : true
   alarm_name          = "rds-${each.value.stack}-${each.value.counter}-replicaLag"
   alarm_actions       = [aws_sns_topic.rds_monitoring.arn]

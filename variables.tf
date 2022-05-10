@@ -41,7 +41,7 @@ variable "kms_key_id" {
 }
 
 variable "monitoring_instances_list" {
-  type        = list(string)
+  type        = map
   description = "List of instances which is needed for the for_each"
 }
 

@@ -41,8 +41,8 @@ variable "kms_key_id" {
 }
 
 variable "monitoring_instances_list" {
-  type        = map
-  description = "List of instances which is needed for the for_each"
+  type        =  list(map(string))
+  description = "List of maps with all instances"
 }
 
 variable "replicalag_threshold" {

@@ -20,7 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "blocked_transactions" {
     DBInstanceIdentifier = element(var.rds_instance_ids, each.value.counter)
   }
 }
-"rds-rds_test_one-2-BlockedTransactions"
+
 //CPUUtilization
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   for_each            = { for instance in var.monitoring_instances_list : "${instance.stack}_${instance.counter}" => instance }
